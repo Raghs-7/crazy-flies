@@ -1,3 +1,4 @@
+# PYTHONPATH=../../src python3 autonomous_sequence_high_level.py
 import time
 import cflib.crtp
 from cflib.crazyflie import Crazyflie
