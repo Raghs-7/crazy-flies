@@ -2,15 +2,19 @@
 
 This repository contains the Bitcraze Crazyflie python library integrated with custom autonomous flight sequences, specifically designed for Loco Positioning System (LPS) environments.
 
-## 📍 Current Mission: Sequential LPS Node Navigator
-The primary script is designed for dynamic environment adaptation. Instead of following a hard-coded path, the drone queries the lab's infrastructure to define its flight plan. 
+## 📍 Current Mission: Seeded Node Navigator
+This mission is designed for high-reliability navigation within a known LPS environment. Instead of polling the anchors via radio (which can be prone to interference), this script uses **seeded coordinates** to define the flight path. 
 
+To ensure hardware longevity, the drone maintains a **safety buffer** from the physical anchors at all times.
+
+### Mission Sequence
 Upon execution, the drone will:
-1. **Auto-Detect Anchors:** Retrieve the $(X, Y, Z)$ coordinates of all active LPS anchors directly from the drone's memory.
-2. **Order of Operations:** Automatically sort the detected anchors by ID to visit them in ascending sequence (Node 0, Node 1, etc.).
-3. **Safety-Buffered Flight:** Navigate to each anchor's $(X, Y)$ location while maintaining a constant `HOVER_HEIGHT` of 1.0m to avoid colliding with hardware.
-4. **Final Approach:** Move to the designated landing zone at `(0, 1)`.
-5. **Precision Landing:** Execute a vertical descent to `(0, 1, 0)`.
+1. **Initialize Seeded Coordinates:** Load the $(X, Y, Z)$ positions of all LPS anchors from the local configuration file.
+2. **Sequential Targeting:** Sort anchors by ID to visit them in ascending order (Node 0, Node 1, etc.).
+3. **Safety-Buffered Navigation:** Calculate a path to each anchor but stop at a predefined distance (Safety Buffer) to prevent physical collisions with the infrastructure.
+4. **Altitude Stability:** Maintain a constant `HOVER_HEIGHT` of 1.0m throughout the mission.
+5. **Final Approach:** Navigate to the designated landing zone at `(0, 1)`.
+6. **Precision Landing:** Execute a vertical descent to `(0, 1, 0)`.
 
 ---
 
