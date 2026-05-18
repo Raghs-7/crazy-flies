@@ -14,17 +14,15 @@ from cflib.utils import uri_helper
 # RADIO URI
 # ==========================================
 
-URI = uri_helper.uri_from_env(
-    default='radio://0/80/2M/E7E7E7E7E7'
-)
+URI = 'udp://127.0.0.1:19850'
 
 
 # ==========================================
 # TARGET CENTER
 # ==========================================
 
-X0 = 2.0
-Y0 = 3.0
+X0 = 0.0
+Y0 = 0.0
 Z0 = 0.8
 
 # Circle radius

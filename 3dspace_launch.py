@@ -10,7 +10,7 @@ from cflib.utils import uri_helper
 # RADIO URI
 # -----------------------------
 URI = uri_helper.uri_from_env(
-    default='radio://0/80/2M/E7E7E7E7E7'
+    default='radio://0/80/2M/E7E7E7E7E2'
 )
 
 # -----------------------------

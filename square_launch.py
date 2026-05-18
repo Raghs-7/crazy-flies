@@ -8,7 +8,7 @@ from cflib.crazyflie.log import LogConfig
 from cflib.crazyflie.syncLogger import SyncLogger
 
 # 1. SET YOUR URI
-URI = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E7')
+URI = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E2')
 
 def get_current_position(scf):
     """Captures the current LPS coordinates before takeoff"""
