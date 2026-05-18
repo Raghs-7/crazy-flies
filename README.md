@@ -1,8 +1,8 @@
-# Crazyflie Autonomous Missions 🛸
+# Crazyflie Autonomous Missions 
 
 This repository contains the Bitcraze Crazyflie python library integrated with custom autonomous flight sequences, specifically designed for Loco Positioning System (LPS) environments.
 
-## 📍 Current Mission: Seeded Node Navigator
+## Current Mission: Seeded Node Navigator
 This mission is designed for high-reliability navigation within a known LPS environment. Instead of polling the anchors via radio (which can be prone to interference), this script uses **seeded coordinates** to define the flight path. 
 
 To ensure hardware longevity, the drone maintains a **safety buffer** from the physical anchors at all times.
@@ -18,7 +18,7 @@ Upon execution, the drone will:
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 
 ### 1. Prerequisites
 Ensure you have the Crazyflie python library dependencies installed:
