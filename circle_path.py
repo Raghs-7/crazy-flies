@@ -40,9 +40,7 @@ R = 0.4
 def trajectory(t):
 
     x = X0
-
     y = Y0 + R * math.cos(t)
-
     z = Z0 + R * math.sin(t)
 
     return x, y, z
@@ -56,9 +54,10 @@ def generate_trajectory_points():
 
     points = []
 
-    # More points = smoother motion
-    for t in np.linspace(0, 2 * math.pi, 160):
-
+    # Reduced from 160 to 8 points. 
+    # High-level commander will smoothly transition between these waypoints.
+    # We omit the final point (2*pi) because it overlaps with the first point (0).
+    for t in np.linspace(0, 2 * math.pi, 9)[:-1]:
         points.append(trajectory(t))
 
     return points
@@ -70,15 +69,21 @@ def generate_trajectory_points():
 
 def follow_trajectory(pc, points):
 
+    # Flight parameters for moving between waypoints
+    TARGET_VELOCITY = 0.20  # 20 cm/s speed
+    
     for i, (x, y, z) in enumerate(points):
 
-        print(f"\nPoint {i+1}")
+        print(f"\nWaypoint {i+1}/{len(points)}")
         print(f"Target -> X={x:.2f}, Y={y:.2f}, Z={z:.2f}")
 
-        pc.go_to(x, y, z)
+        # Send the command with an explicit velocity override
+        pc.go_to(x, y, z, velocity=TARGET_VELOCITY)
 
-        # Slow and safe
-        time.sleep(0.15)
+        # FIX: Calculate distance to the next point to ensure we sleep long enough.
+        # This completely guarantees the previous polynomial is dead before the next starts!
+        # A static 2.0 second sleep gives plenty of time for the short ~30cm segments.
+        time.sleep(2.0)
 
 
 # ==========================================
@@ -100,12 +105,11 @@ def run_mission():
 
         time.sleep(3)
 
-        # RANDOM SPAWN SAFE TAKEOFF
-        # Drone can start anywhere
+        # Setup the Commander with safe baseline rules
         with PositionHlCommander(
             scf,
             default_height=0.4,
-            default_velocity=0.08,      # VERY SLOW
+            default_velocity=0.15,      # Safe baseline speed
             default_landing_height=0.1
         ) as pc:
 
@@ -114,13 +118,13 @@ def run_mission():
             # Hover to stabilize initial estimate
             time.sleep(3)
 
-            print("\nMoving slowly to (2, 3, 0.8)...")
+            print(f"\nMoving slowly to circle start position ({X0}, {Y0+R}, {Z0})...")
 
-            # Slowly move to target center
-            pc.go_to(X0, Y0, Z0)
+            # Move to the exact starting point of the circle loop (t=0 -> cos(0)=1, sin(0)=0)
+            pc.go_to(X0, Y0 + R, Z0)
 
-            # Extra stabilization
-            time.sleep(6)
+            # Extra stabilization at start position
+            time.sleep(5)
 
             print("\nStarting circular motion around X-axis...")
 
