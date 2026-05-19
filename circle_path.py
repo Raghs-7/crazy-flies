@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import time
 import csv
@@ -17,14 +19,17 @@ from cflib.utils.reset_estimator import reset_estimator
 # URI to the Crazyflie
 uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E2')
 
-# -------- Circular Trajectory --------
-
-r = 0.5
+# -------- First Octant Circular Trajectory --------
+# Circle Center will be at local relative (0.5, 0.5). Radius = 0.35.
+# This means the absolute closest it gets to any boundary is 0.15m (safely positive!).
+r = 0.35
 
 trajectory = [
-    CompressedStart(1.0, 3.0, 0.8, 0.0),
+    # Start point of the circle relative to our new positive offset waypoint
+    # We start at CenterX + Radius (0.5 + 0.35 = 0.85), CenterY (0.5)
+    CompressedStart(0.85, 0.5, 0.6, 0.0),
 
-    # quarter 1
+    # Quarter 1 loop segment
     CompressedSegment(
         2.0,
         [0.0, r, 0.0],
@@ -33,7 +38,7 @@ trajectory = [
         []
     ),
 
-    # quarter 2
+    # Quarter 2 loop segment
     CompressedSegment(
         2.0,
         [-r, 0.0, 0.0],
@@ -42,7 +47,7 @@ trajectory = [
         []
     ),
 
-    # quarter 3
+    # Quarter 3 loop segment
     CompressedSegment(
         2.0,
         [0.0, -r, 0.0],
@@ -51,7 +56,7 @@ trajectory = [
         []
     ),
 
-    # quarter 4
+    # Quarter 4 loop segment
     CompressedSegment(
         2.0,
         [r, 0.0, 0.0],
@@ -153,51 +158,22 @@ def plot_and_save_data(log_data):
     ey = np.array([d['expected_y'] for d in log_data])
     ez = np.array([d['expected_z'] for d in log_data])
 
-    # XY
+    # XY Plot
     plt.figure()
     plt.plot(ax, ay, label='Actual')
     plt.plot(ex, ey, '--', label='Expected')
-    plt.title("Top-down XY")
+    plt.title("Top-down XY (Should be entirely positive)")
     plt.legend()
     plt.grid(True)
     plt.axis('equal')
     plt.savefig("trajectory_xy_topdown.png")
     print("Saved trajectory_xy_topdown.png")
 
-    # X(t)
-    plt.figure()
-    plt.plot(t, ax)
-    plt.plot(t, ex, '--')
-    plt.title("X over time")
-    plt.grid(True)
-    plt.savefig("trajectory_x.png")
-    print("Saved trajectory_x.png")
-
-    # Y(t)
-    plt.figure()
-    plt.plot(t, ay)
-    plt.plot(t, ey, '--')
-    plt.title("Y over time")
-    plt.grid(True)
-    plt.savefig("trajectory_y.png")
-    print("Saved trajectory_y.png")
-
-    # Z(t)
-    plt.figure()
-    plt.plot(t, az)
-    plt.plot(t, ez, '--')
-    plt.title("Z over time")
-    plt.grid(True)
-    plt.savefig("trajectory_z.png")
-    print("Saved trajectory_z.png")
-
     # 3D
     fig = plt.figure()
-    ax3 = fig.add_subplot(111, projection='3d')
-    ax3.plot(ax, ay, az)
-    ax3.plot(ex, ey, ez, '--')
-    ax3.set_title("3D Trajectory")
-    plt.show()
+    fig.add_subplot(111, projection='3d').plot(ax, ay, az, label='Actual')
+    plt.savefig("trajectory_3d.png")
+
 
 # -------- RUN SEQUENCE ----------
 
@@ -209,29 +185,25 @@ def run_sequence(cf, trajectory_id, duration):
     cf.platform.send_arming_request(True)
     time.sleep(1.0)
 
-    # Takeoff
-    commander.takeoff(1.0, 2.0)
-    time.sleep(3)
+    # 1. Takeoff vertically relative to wherever it sits right now
+    print("Taking off...")
+    commander.takeoff(0.6, 2.5)
+    time.sleep(3.5)
 
-    # Move safely to trajectory start point
-    commander.go_to(1.0, 3.0, 0.8, 0, 4.0, relative=False)
-    time.sleep(4.2)
+    # 2. Cruise deep into the local first octant relative to home (x > 0, y > 0)
+    print("Moving into local positive space...")
+    commander.go_to(0.5, 0.5, 0.6, yaw=0, duration=4.0, relative=True)
+    time.sleep(4.5)
 
-    # Start circular compressed trajectory
-    commander.start_trajectory(trajectory_id, 1.0, True)
-    time.sleep(duration)
+    # 3. Fire off the circular trajectory array built in positive bounds
+    print("Executing circle...")
+    commander.start_trajectory(trajectory_id, time_scale=1.0, relative=True)
+    time.sleep(duration + 1.0)
 
-    # Move to landing point
-    LAND_X = 2.50
-    LAND_Y = 3.36
-    SAFE_Z = 0.5
-
-    commander.go_to(LAND_X, LAND_Y, SAFE_Z, 0, 3, relative=False)
-    time.sleep(3.2)
-
-    # Land
-    commander.land(0.0, 3.0)
-    time.sleep(3.2)
+    # 4. Bring it straight down safely at its relative endpoint
+    print("Landing...")
+    commander.land(0.0, duration=3.0)
+    time.sleep(3.5)
 
     commander.stop()
     log_conf.stop()
@@ -254,8 +226,6 @@ if __name__ == '__main__':
         reset_estimator(cf)
         run_sequence(cf, traj_id, duration)
 
-    # ---- SAVE CSV ----
+    # ---- SAVE AND PLOT ----
     save_log_to_csv(log_data_list)
-
-    # ---- PLOT ----
     plot_and_save_data(log_data_list)
