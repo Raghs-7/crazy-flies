@@ -12,41 +12,86 @@ from cflib.crazyflie import Crazyflie
 from cflib.crazyflie.log import LogConfig
 from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.utils import uri_helper
-from cflib.utils.reset_estimator import reset_estimator
 
-# URI to the Crazyflie
+# NOTE: reset_estimator is intentionally NOT imported.
+# With the LPS deck the Kalman filter already knows the drone's
+# absolute lab position — resetting it would destroy that information.
+
 uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E2')
 
-# -------- Circle Parameters --------
-# Safe boundary: square with vertices (0,1,0), (0,4,0), (3,1,0), (3,4,0)
-#   X range: 0 → 3  (width  = 3 m, half = 1.5 m)
-#   Y range: 1 → 4  (height = 3 m, half = 1.5 m)
-#   Center  = (1.5, 2.5)
-#
-# Maximum inscribed circle radius = 1.5 m.
-# We use 1.2 m to keep a 0.3 m safety margin on every side.
-#
-# Boundary check at any angle θ:
-#   x(θ) = 1.5 + 1.2·cos(θ)  ∈ [0.3, 2.7]  ✓ inside [0, 3]
-#   y(θ) = 2.5 + 1.2·sin(θ)  ∈ [1.3, 3.7]  ✓ inside [1, 4]
+# -------- Safe zone (your lab square) --------
+# Vertices: (0,1), (0,4), (3,1), (3,4)
+SAFE_X_MIN, SAFE_X_MAX = 0.0, 3.0
+SAFE_Y_MIN, SAFE_Y_MAX = 1.0, 4.0
 
-RADIUS = 1.2        # metres (1.5 m half-side − 0.3 m margin)
-OMEGA  = 0.7        # rad/s  (~one lap every 8.98 s)
+# -------- Circle parameters --------
+# Centre of the safe square in absolute lab coordinates
+CIRCLE_CENTER_X = 1.5
+CIRCLE_CENTER_Y = 2.5
 
-# 20 s ≈ 2.2 full laps — enough to observe tracking behaviour
+RADIUS = 1.2    # metres  (0.3 m margin from every wall)
+OMEGA  = 0.7    # rad/s
 CIRCLE_DURATION = 20.0   # seconds
+DT     = 0.1    # seconds per waypoint (10 Hz)
+FLY_Z  = 0.6    # cruise altitude (m)
 
-# Waypoint step — 10 Hz keeps go_to chain smooth
-DT = 0.1
-
-# Circle center expressed as displacement from takeoff origin (0, 0)
-CENTER_REL_X = 1.5   # world-frame X of circle center
-CENTER_REL_Y = 2.5   # world-frame Y of circle center
-FLY_Z        = 0.6   # cruise altitude (m)
+# How long to wait for the LPS estimator to converge at boot
+LPS_SETTLE_TIME = 3.0   # seconds
 
 # -------- Logging globals --------
 log_data_list = []
-log_conf = None
+log_conf      = None
+
+# Spawn position read from LPS (filled before flight)
+spawn_x = None
+spawn_y = None
+spawn_z = None
+
+
+# -------- POSITION READING --------
+
+def read_lps_position(cf):
+    """
+    Block until the Kalman filter has a stable LPS fix,
+    then return (x, y, z) in absolute lab coordinates.
+
+    kalman.stateX/Y/Z are the filtered position estimates that the
+    LPS anchors continuously correct.  We sample them once after
+    letting the filter settle for LPS_SETTLE_TIME seconds.
+    """
+    print(f"Waiting {LPS_SETTLE_TIME} s for LPS estimator to settle ...")
+    time.sleep(LPS_SETTLE_TIME)
+
+    pos = {}
+    done = [False]
+
+    def _cb(timestamp, data, logconf):
+        if not done[0]:
+            pos['x'] = data.get('kalman.stateX', 0)
+            pos['y'] = data.get('kalman.stateY', 0)
+            pos['z'] = data.get('kalman.stateZ', 0)
+            done[0] = True
+
+    lc = LogConfig(name='SpawnPos', period_in_ms=100)
+    lc.add_variable('kalman.stateX', 'float')
+    lc.add_variable('kalman.stateY', 'float')
+    lc.add_variable('kalman.stateZ', 'float')
+    cf.log.add_config(lc)
+    lc.data_received_cb.add_callback(_cb)
+    lc.start()
+
+    timeout = 5.0
+    t0 = time.time()
+    while not done[0] and (time.time() - t0) < timeout:
+        time.sleep(0.05)
+
+    lc.stop()
+
+    if not done[0]:
+        raise RuntimeError("Could not read LPS position within timeout. "
+                           "Check that the LPS deck is active and anchors are on.")
+
+    return pos['x'], pos['y'], pos['z']
 
 
 # -------- LOG CALLBACK ----------
@@ -67,7 +112,6 @@ def log_callback(timestamp, data, logconf):
 
 def setup_logging(cf):
     global log_conf
-
     log_conf = LogConfig(name='TrajectoryLog', period_in_ms=100)
     log_conf.add_variable('kalman.stateX', 'float')
     log_conf.add_variable('kalman.stateY', 'float')
@@ -75,27 +119,23 @@ def setup_logging(cf):
     log_conf.add_variable('ctrltarget.x', 'float')
     log_conf.add_variable('ctrltarget.y', 'float')
     log_conf.add_variable('ctrltarget.z', 'float')
-
     cf.log.add_config(log_conf)
     log_conf.data_received_cb.add_callback(log_callback)
 
 
 # -------- SAVE CSV ----------
 
-def save_log_to_csv(log_data, filename='trajectory_log.csv'):
+def save_log_to_csv(log_data, filename='/home/dewang/trajectory_log.csv'):
     if not log_data:
         print("No logs to save!")
         return
-
     keys = ['time', 'actual_x', 'actual_y', 'actual_z',
             'expected_x', 'expected_y', 'expected_z']
-
     with open(filename, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         for row in log_data:
             writer.writerow(row)
-
     print(f"Saved CSV: {filename}")
 
 
@@ -112,41 +152,62 @@ def plot_and_save_data(log_data):
     ax_arr = np.array([d['actual_x']   for d in log_data])
     ay_arr = np.array([d['actual_y']   for d in log_data])
     az_arr = np.array([d['actual_z']   for d in log_data])
-
     ex_arr = np.array([d['expected_x'] for d in log_data])
     ey_arr = np.array([d['expected_y'] for d in log_data])
-    ez_arr = np.array([d['expected_z'] for d in log_data])
 
-    # Draw safety boundary on XY plot
-    bx = [0, 3, 3, 0, 0]
-    by = [1, 1, 4, 4, 1]
+    bx = [SAFE_X_MIN, SAFE_X_MAX, SAFE_X_MAX, SAFE_X_MIN, SAFE_X_MIN]
+    by = [SAFE_Y_MIN, SAFE_Y_MIN, SAFE_Y_MAX, SAFE_Y_MAX, SAFE_Y_MIN]
 
     plt.figure()
     plt.plot(bx, by, 'r--', linewidth=1.5, label='Safety boundary')
+    # Mark spawn point
+    if spawn_x is not None:
+        plt.plot(spawn_x, spawn_y, 'ko', markersize=8, label=f'Spawn ({spawn_x:.2f},{spawn_y:.2f})')
+    plt.plot(CIRCLE_CENTER_X, CIRCLE_CENTER_Y, 'g+', markersize=12,
+             markeredgewidth=2, label='Circle centre')
     plt.plot(ax_arr, ay_arr, label='Actual')
     plt.plot(ex_arr, ey_arr, '--', label='Expected')
-    plt.title("Top-down XY — circle inside safe square")
+    plt.title("Top-down XY — LPS absolute coordinates")
     plt.xlabel('X (m)'); plt.ylabel('Y (m)')
     plt.legend()
     plt.grid(True)
     plt.axis('equal')
-    plt.savefig("trajectory_xy_topdown.png")
+    plt.savefig("/home/dewang/trajectory_xy_topdown.png")
     print("Saved trajectory_xy_topdown.png")
 
-    # 3D plot
     fig = plt.figure()
     ax3 = fig.add_subplot(111, projection='3d')
     ax3.plot(ax_arr, ay_arr, az_arr, label='Actual')
     ax3.set_xlabel('X'); ax3.set_ylabel('Y'); ax3.set_zlabel('Z')
     ax3.legend()
-    plt.savefig("trajectory_3d.png")
+    plt.savefig("/home/dewang/trajectory_3d.png")
     print("Saved trajectory_3d.png")
 
 
 # -------- MAIN SEQUENCE ----------
 
 def run_sequence(cf):
+    global spawn_x, spawn_y, spawn_z
+
     commander = cf.high_level_commander
+
+    # ------------------------------------------------------------------
+    # READ SPAWN POSITION FROM LPS
+    # This is the key difference from the old script.
+    # The drone uses its LPS fix to know exactly where it is in the lab
+    # before any motion command is sent.
+    # ------------------------------------------------------------------
+    spawn_x, spawn_y, spawn_z = read_lps_position(cf)
+    print(f"LPS spawn position: x={spawn_x:.3f}  y={spawn_y:.3f}  z={spawn_z:.3f}")
+
+    # Safety check — make sure the drone is actually inside the safe zone
+    margin = 0.1
+    if not (SAFE_X_MIN + margin <= spawn_x <= SAFE_X_MAX - margin and
+            SAFE_Y_MIN + margin <= spawn_y <= SAFE_Y_MAX - margin):
+        raise RuntimeError(
+            f"Spawn position ({spawn_x:.2f}, {spawn_y:.2f}) is outside or "
+            f"too close to the safe zone boundary. Aborting."
+        )
 
     log_conf.start()
 
@@ -158,56 +219,53 @@ def run_sequence(cf):
     time.sleep(1.0)
 
     # ------------------------------------------------------------------
-    # PHASE 1 — TAKEOFF  (0 – 3.5 s)
-    # Drone lifts vertically to FLY_Z from the takeoff origin (0, 0).
+    # PHASE 1 — TAKEOFF
+    # Climbs vertically from wherever it spawned. Uses absolute Z.
     # ------------------------------------------------------------------
-    print("Phase 1: Taking off to 0.6 m ...")
+    print("Phase 1: Taking off ...")
     commander.takeoff(FLY_Z, 2.5)
     time.sleep(3.5)
 
     # ------------------------------------------------------------------
-    # PHASE 2 — MOVE TO CIRCLE CENTER  (3.5 – 8.5 s)
-    # Translate from (0, 0) to (1.5, 2.5) — the center of the safe square.
-    # relative=True means the offset is added to the current position.
+    # PHASE 2 — FLY TO CIRCLE CENTRE (absolute, not relative)
+    #
+    # OLD code used relative=True which worked only when spawn=(0,0).
+    # Now we fly to the fixed absolute lab centre (1.5, 2.5) regardless
+    # of where the drone spawned.
+    #
+    # Travel distance from spawn to centre:
+    dist = math.sqrt((CIRCLE_CENTER_X - spawn_x)**2 +
+                     (CIRCLE_CENTER_Y - spawn_y)**2)
+    # Allow ~1 s per 0.5 m, minimum 3 s
+    travel_time = max(3.0, dist / 0.5)
     # ------------------------------------------------------------------
-    print(f"Phase 2: Moving to circle center ({CENTER_REL_X}, {CENTER_REL_Y}) ...")
-    commander.go_to(CENTER_REL_X, CENTER_REL_Y, FLY_Z,
-                    yaw=0.0, duration_s=4.0, relative=True)
-    time.sleep(4.5)
+    print(f"Phase 2: Flying to circle centre (dist={dist:.2f} m, t={travel_time:.1f} s) ...")
+    commander.go_to(CIRCLE_CENTER_X, CIRCLE_CENTER_Y, FLY_Z,
+                    yaw=0.0, duration_s=travel_time, relative=False)
+    time.sleep(travel_time + 0.5)
 
     # ------------------------------------------------------------------
-    # PHASE 3 — CIRCLE  (8.5 – 28.5 s = 20 s)
-    #
-    # World-frame trajectory:
-    #   x(t) = 1.5 + 1.2·cos(0.7·t)   ∈ [0.3, 2.7]  — 0.3 m inside X walls
-    #   y(t) = 2.5 + 1.2·sin(0.7·t)   ∈ [1.3, 3.7]  — 0.3 m inside Y walls
-    #
-    # go_to waypoints are issued every DT=0.1 s with relative=False so the
-    # high-level commander tracks explicit absolute positions.
+    # PHASE 3 — CIRCLE (absolute waypoints, same as before)
     # ------------------------------------------------------------------
     print(f"Phase 3: Circle — r={RADIUS} m, ω={OMEGA} rad/s, {CIRCLE_DURATION} s ...")
 
-    cx = CENTER_REL_X   # 1.5
-    cy = CENTER_REL_Y   # 2.5
-
     steps = int(CIRCLE_DURATION / DT)
-    theta = 0.0   # start angle → first waypoint at (cx+r, cy) = (2.7, 2.5)
+    theta = 0.0
 
     for _ in range(steps):
-        wx = cx + RADIUS * math.cos(theta)
-        wy = cy + RADIUS * math.sin(theta)
+        wx = CIRCLE_CENTER_X + RADIUS * math.cos(theta)
+        wy = CIRCLE_CENTER_Y + RADIUS * math.sin(theta)
 
-        # Safety guard — should never trigger given the geometry above
-        wx = max(0.05, min(2.95, wx))
-        wy = max(1.05, min(3.95, wy))
+        # Hard clamp inside safe zone
+        wx = max(SAFE_X_MIN + 0.05, min(SAFE_X_MAX - 0.05, wx))
+        wy = max(SAFE_Y_MIN + 0.05, min(SAFE_Y_MAX - 0.05, wy))
 
         commander.go_to(wx, wy, FLY_Z, yaw=0.0, duration_s=DT, relative=False)
-
         theta += OMEGA * DT
         time.sleep(DT)
 
     # ------------------------------------------------------------------
-    # PHASE 4 — LAND  (28.5 – 32 s)
+    # PHASE 4 — LAND
     # ------------------------------------------------------------------
     print("Phase 4: Landing ...")
     commander.land(0.0, duration_s=3.0)
@@ -226,8 +284,8 @@ if __name__ == '__main__':
     with SyncCrazyflie(uri, cf=Crazyflie(rw_cache='./cache')) as scf:
         cf = scf.cf
 
+        # Do NOT call reset_estimator() here — LPS gives us a real position
         setup_logging(cf)
-        reset_estimator(cf)
         run_sequence(cf)
 
     save_log_to_csv(log_data_list)
