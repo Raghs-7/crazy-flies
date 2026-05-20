@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 
-import sys
 import time
 import csv
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 import cflib.crtp
 from cflib.crazyflie import Crazyflie
-from cflib.crazyflie.high_level_commander import HighLevelCommander
 from cflib.crazyflie.log import LogConfig
-from cflib.crazyflie.mem import CompressedSegment, CompressedStart, MemoryElement
 from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.utils import uri_helper
 from cflib.utils.reset_estimator import reset_estimator
@@ -19,88 +17,49 @@ from cflib.utils.reset_estimator import reset_estimator
 # URI to the Crazyflie
 uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E2')
 
-# -------- First Octant Circular Trajectory --------
-# Circle Center will be at local relative (0.5, 0.5). Radius = 0.35.
-# This means the absolute closest it gets to any boundary is 0.15m (safely positive!).
-r = 0.35
+# -------- Circle Parameters --------
+# Safe boundary: square with vertices (0,1,0), (0,4,0), (3,1,0), (3,4,0)
+#   X range: 0 → 3  (width  = 3 m, half = 1.5 m)
+#   Y range: 1 → 4  (height = 3 m, half = 1.5 m)
+#   Center  = (1.5, 2.5)
+#
+# Maximum inscribed circle radius = 1.5 m.
+# We use 1.2 m to keep a 0.3 m safety margin on every side.
+#
+# Boundary check at any angle θ:
+#   x(θ) = 1.5 + 1.2·cos(θ)  ∈ [0.3, 2.7]  ✓ inside [0, 3]
+#   y(θ) = 2.5 + 1.2·sin(θ)  ∈ [1.3, 3.7]  ✓ inside [1, 4]
 
-trajectory = [
-    # Start point of the circle relative to our new positive offset waypoint
-    # We start at CenterX + Radius (0.5 + 0.35 = 0.85), CenterY (0.5)
-    CompressedStart(0.85, 0.5, 0.6, 0.0),
+RADIUS = 1.2        # metres (1.5 m half-side − 0.3 m margin)
+OMEGA  = 0.7        # rad/s  (~one lap every 8.98 s)
 
-    # Quarter 1 loop segment
-    CompressedSegment(
-        2.0,
-        [0.0, r, 0.0],
-        [-r, 0.0, 0.0],
-        [],
-        []
-    ),
+# 20 s ≈ 2.2 full laps — enough to observe tracking behaviour
+CIRCLE_DURATION = 20.0   # seconds
 
-    # Quarter 2 loop segment
-    CompressedSegment(
-        2.0,
-        [-r, 0.0, 0.0],
-        [0.0, -r, 0.0],
-        [],
-        []
-    ),
+# Waypoint step — 10 Hz keeps go_to chain smooth
+DT = 0.1
 
-    # Quarter 3 loop segment
-    CompressedSegment(
-        2.0,
-        [0.0, -r, 0.0],
-        [r, 0.0, 0.0],
-        [],
-        []
-    ),
+# Circle center expressed as displacement from takeoff origin (0, 0)
+CENTER_REL_X = 1.5   # world-frame X of circle center
+CENTER_REL_Y = 2.5   # world-frame Y of circle center
+FLY_Z        = 0.6   # cruise altitude (m)
 
-    # Quarter 4 loop segment
-    CompressedSegment(
-        2.0,
-        [r, 0.0, 0.0],
-        [0.0, r, 0.0],
-        [],
-        []
-    ),
-]
-
-# Global variable for logs
+# -------- Logging globals --------
 log_data_list = []
 log_conf = None
-
-
-def upload_trajectory(cf, trajectory_id, trajectory):
-    trajectory_mem = cf.mem.get_mems(MemoryElement.TYPE_TRAJ)[0]
-    trajectory_mem.trajectory = trajectory
-
-    if not trajectory_mem.write_data_sync():
-        print('Upload failed!')
-        sys.exit(1)
-
-    cf.high_level_commander.define_trajectory(
-        trajectory_id, 0, len(trajectory),
-        type=HighLevelCommander.TRAJECTORY_TYPE_POLY4D_COMPRESSED
-    )
-
-    total_duration = 0
-    for seg in trajectory[1:]:
-        total_duration += seg.duration
-    return total_duration
 
 
 # -------- LOG CALLBACK ----------
 
 def log_callback(timestamp, data, logconf):
     log_data_list.append({
-        'time': timestamp,
-        'actual_x': data.get('kalman.stateX', 0),
-        'actual_y': data.get('kalman.stateY', 0),
-        'actual_z': data.get('kalman.stateZ', 0),
-        'expected_x': data.get('ctrltarget.x', 0),
-        'expected_y': data.get('ctrltarget.y', 0),
-        'expected_z': data.get('ctrltarget.z', 0)
+        'time':       timestamp,
+        'actual_x':   data.get('kalman.stateX',  0),
+        'actual_y':   data.get('kalman.stateY',  0),
+        'actual_z':   data.get('kalman.stateZ',  0),
+        'expected_x': data.get('ctrltarget.x',   0),
+        'expected_y': data.get('ctrltarget.y',   0),
+        'expected_z': data.get('ctrltarget.z',   0),
     })
 
 
@@ -147,66 +106,116 @@ def plot_and_save_data(log_data):
         print('No data to plot.')
         return
 
-    t = np.array([d['time'] for d in log_data]) / 1000.0
+    t  = np.array([d['time']       for d in log_data]) / 1000.0
     t -= t[0]
 
-    ax = np.array([d['actual_x'] for d in log_data])
-    ay = np.array([d['actual_y'] for d in log_data])
-    az = np.array([d['actual_z'] for d in log_data])
+    ax_arr = np.array([d['actual_x']   for d in log_data])
+    ay_arr = np.array([d['actual_y']   for d in log_data])
+    az_arr = np.array([d['actual_z']   for d in log_data])
 
-    ex = np.array([d['expected_x'] for d in log_data])
-    ey = np.array([d['expected_y'] for d in log_data])
-    ez = np.array([d['expected_z'] for d in log_data])
+    ex_arr = np.array([d['expected_x'] for d in log_data])
+    ey_arr = np.array([d['expected_y'] for d in log_data])
+    ez_arr = np.array([d['expected_z'] for d in log_data])
 
-    # XY Plot
+    # Draw safety boundary on XY plot
+    bx = [0, 3, 3, 0, 0]
+    by = [1, 1, 4, 4, 1]
+
     plt.figure()
-    plt.plot(ax, ay, label='Actual')
-    plt.plot(ex, ey, '--', label='Expected')
-    plt.title("Top-down XY (Should be entirely positive)")
+    plt.plot(bx, by, 'r--', linewidth=1.5, label='Safety boundary')
+    plt.plot(ax_arr, ay_arr, label='Actual')
+    plt.plot(ex_arr, ey_arr, '--', label='Expected')
+    plt.title("Top-down XY — circle inside safe square")
+    plt.xlabel('X (m)'); plt.ylabel('Y (m)')
     plt.legend()
     plt.grid(True)
     plt.axis('equal')
     plt.savefig("trajectory_xy_topdown.png")
     print("Saved trajectory_xy_topdown.png")
 
-    # 3D
+    # 3D plot
     fig = plt.figure()
-    fig.add_subplot(111, projection='3d').plot(ax, ay, az, label='Actual')
+    ax3 = fig.add_subplot(111, projection='3d')
+    ax3.plot(ax_arr, ay_arr, az_arr, label='Actual')
+    ax3.set_xlabel('X'); ax3.set_ylabel('Y'); ax3.set_zlabel('Z')
+    ax3.legend()
     plt.savefig("trajectory_3d.png")
+    print("Saved trajectory_3d.png")
 
 
-# -------- RUN SEQUENCE ----------
+# -------- MAIN SEQUENCE ----------
 
-def run_sequence(cf, trajectory_id, duration):
+def run_sequence(cf):
     commander = cf.high_level_commander
 
     log_conf.start()
 
-    cf.platform.send_arming_request(True)
+    # Arm
+    try:
+        cf.supervisor.send_arming_request(True)
+    except AttributeError:
+        cf.platform.send_arming_request(True)
     time.sleep(1.0)
 
-    # 1. Takeoff vertically relative to wherever it sits right now
-    print("Taking off...")
-    commander.takeoff(0.6, 2.5)
+    # ------------------------------------------------------------------
+    # PHASE 1 — TAKEOFF  (0 – 3.5 s)
+    # Drone lifts vertically to FLY_Z from the takeoff origin (0, 0).
+    # ------------------------------------------------------------------
+    print("Phase 1: Taking off to 0.6 m ...")
+    commander.takeoff(FLY_Z, 2.5)
     time.sleep(3.5)
 
-    # 2. Cruise deep into the local first octant relative to home (x > 0, y > 0)
-    print("Moving into local positive space...")
-    commander.go_to(0.5, 0.5, 0.6, yaw=0, duration=4.0, relative=True)
+    # ------------------------------------------------------------------
+    # PHASE 2 — MOVE TO CIRCLE CENTER  (3.5 – 8.5 s)
+    # Translate from (0, 0) to (1.5, 2.5) — the center of the safe square.
+    # relative=True means the offset is added to the current position.
+    # ------------------------------------------------------------------
+    print(f"Phase 2: Moving to circle center ({CENTER_REL_X}, {CENTER_REL_Y}) ...")
+    commander.go_to(CENTER_REL_X, CENTER_REL_Y, FLY_Z,
+                    yaw=0.0, duration_s=4.0, relative=True)
     time.sleep(4.5)
 
-    # 3. Fire off the circular trajectory array built in positive bounds
-    print("Executing circle...")
-    commander.start_trajectory(trajectory_id, time_scale=1.0, relative=True)
-    time.sleep(duration + 1.0)
+    # ------------------------------------------------------------------
+    # PHASE 3 — CIRCLE  (8.5 – 28.5 s = 20 s)
+    #
+    # World-frame trajectory:
+    #   x(t) = 1.5 + 1.2·cos(0.7·t)   ∈ [0.3, 2.7]  — 0.3 m inside X walls
+    #   y(t) = 2.5 + 1.2·sin(0.7·t)   ∈ [1.3, 3.7]  — 0.3 m inside Y walls
+    #
+    # go_to waypoints are issued every DT=0.1 s with relative=False so the
+    # high-level commander tracks explicit absolute positions.
+    # ------------------------------------------------------------------
+    print(f"Phase 3: Circle — r={RADIUS} m, ω={OMEGA} rad/s, {CIRCLE_DURATION} s ...")
 
-    # 4. Bring it straight down safely at its relative endpoint
-    print("Landing...")
-    commander.land(0.0, duration=3.0)
+    cx = CENTER_REL_X   # 1.5
+    cy = CENTER_REL_Y   # 2.5
+
+    steps = int(CIRCLE_DURATION / DT)
+    theta = 0.0   # start angle → first waypoint at (cx+r, cy) = (2.7, 2.5)
+
+    for _ in range(steps):
+        wx = cx + RADIUS * math.cos(theta)
+        wy = cy + RADIUS * math.sin(theta)
+
+        # Safety guard — should never trigger given the geometry above
+        wx = max(0.05, min(2.95, wx))
+        wy = max(1.05, min(3.95, wy))
+
+        commander.go_to(wx, wy, FLY_Z, yaw=0.0, duration_s=DT, relative=False)
+
+        theta += OMEGA * DT
+        time.sleep(DT)
+
+    # ------------------------------------------------------------------
+    # PHASE 4 — LAND  (28.5 – 32 s)
+    # ------------------------------------------------------------------
+    print("Phase 4: Landing ...")
+    commander.land(0.0, duration_s=3.0)
     time.sleep(3.5)
 
     commander.stop()
     log_conf.stop()
+    print("Sequence complete.")
 
 
 # -------- MAIN ----------
@@ -218,14 +227,8 @@ if __name__ == '__main__':
         cf = scf.cf
 
         setup_logging(cf)
-        traj_id = 1
-
-        duration = upload_trajectory(cf, traj_id, trajectory)
-        print(f"Trajectory duration: {duration:.1f}s")
-
         reset_estimator(cf)
-        run_sequence(cf, traj_id, duration)
+        run_sequence(cf)
 
-    # ---- SAVE AND PLOT ----
     save_log_to_csv(log_data_list)
     plot_and_save_data(log_data_list)
