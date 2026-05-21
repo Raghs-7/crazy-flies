@@ -1,0 +1,22 @@
+[0.062s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo -- -j20 -l20
+[1.284s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo -- -j20 -l20
+[1.310s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo
+[1.328s] -- Install configuration: ""
+[1.329s] -- Execute custom install script
+[1.330s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/worlds/crazyflie_world.sdf
+[1.331s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ament_index/resource_index/package_run_dependencies/ros_gz_crazyflie_gazebo
+[1.332s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ament_index/resource_index/parent_prefix_path/ros_gz_crazyflie_gazebo
+[1.334s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/environment/ament_prefix_path.sh
+[1.334s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/environment/ament_prefix_path.dsv
+[1.335s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/environment/path.sh
+[1.335s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/environment/path.dsv
+[1.336s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/local_setup.bash
+[1.337s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/local_setup.sh
+[1.340s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/local_setup.zsh
+[1.340s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/local_setup.dsv
+[1.341s] -- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/package.dsv
+[1.355s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ament_index/resource_index/packages/ros_gz_crazyflie_gazebo
+[1.356s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/cmake/ros_gz_crazyflie_gazeboConfig.cmake
+[1.356s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/cmake/ros_gz_crazyflie_gazeboConfig-version.cmake
+[1.357s] -- Up-to-date symlink: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_gazebo/share/ros_gz_crazyflie_gazebo/package.xml
+[1.366s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_gazebo

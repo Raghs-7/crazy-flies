@@ -1,0 +1,21 @@
+[1.906s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/src/crazyflie_ros2_multiranger/crazyflie_ros2_multiranger_simple_mapper': PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/crazyflie_ros2_multiranger_simple_mapper build --build-base /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/build install --record /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/install.log --single-version-externally-managed install_data
+[2.171s] running egg_info
+[2.172s] writing ../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info/PKG-INFO
+[2.172s] writing dependency_links to ../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info/dependency_links.txt
+[2.172s] writing entry points to ../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info/entry_points.txt
+[2.172s] writing requirements to ../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info/requires.txt
+[2.173s] writing top-level names to ../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info/top_level.txt
+[2.174s] reading manifest file '../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+[2.175s] writing manifest file '../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+[2.175s] running build
+[2.175s] running build_py
+[2.175s] running install
+[2.176s] running install_lib
+[2.178s] running install_data
+[2.178s] running install_egg_info
+[2.181s] removing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages/crazyflie_ros2_multiranger_simple_mapper-0.0.0-py3.10.egg-info' (and everything under it)
+[2.181s] Copying ../../../build/crazyflie_ros2_multiranger_simple_mapper/crazyflie_ros2_multiranger_simple_mapper.egg-info to /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages/crazyflie_ros2_multiranger_simple_mapper-0.0.0-py3.10.egg-info
+[2.182s] running install_scripts
+[2.209s] Installing simple_mapper_multiranger script to /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/crazyflie_ros2_multiranger_simple_mapper
+[2.209s] writing list of installed files to '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/install.log'
+[2.260s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/src/crazyflie_ros2_multiranger/crazyflie_ros2_multiranger_simple_mapper' returned '0': PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/crazyflie_ros2_multiranger_simple_mapper build --build-base /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/build install --record /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/install.log --single-version-externally-managed install_data

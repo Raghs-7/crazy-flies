@@ -1,0 +1,143 @@
+[0.168s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim': AMENT_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/raghav/crazyflie_mapping_demo/ros2_ws/src/crazyswarm2/crazyflie_sim -DBUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim
+[0.215s] -- The C compiler identification is GNU 11.4.0
+[0.261s] -- The CXX compiler identification is GNU 11.4.0
+[0.267s] -- Detecting C compiler ABI info
+[0.325s] -- Detecting C compiler ABI info - done
+[0.330s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.330s] -- Detecting C compile features
+[0.330s] -- Detecting C compile features - done
+[0.332s] -- Detecting CXX compiler ABI info
+[0.398s] -- Detecting CXX compiler ABI info - done
+[0.404s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.404s] -- Detecting CXX compile features
+[0.404s] -- Detecting CXX compile features - done
+[0.405s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.526s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.644s] -- Found ament_cmake_pytest: 1.3.14 (/opt/ros/humble/share/ament_cmake_pytest/cmake)
+[1.096s] -- Configuring done
+[1.099s] -- Generating done
+[1.100s] -- Build files have been written to: /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim
+[1.104s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim' returned '0': AMENT_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/raghav/crazyflie_mapping_demo/ros2_ws/src/crazyswarm2/crazyflie_sim -DBUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim
+[1.105s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim': AMENT_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim -- -j20 -l20
+[1.163s] Built target ament_cmake_python_copy_crazyflie_sim_setup
+[1.164s] Built target ament_cmake_python_copy_crazyflie_sim
+[1.333s] running egg_info
+[1.333s] creating crazyflie_sim.egg-info
+[1.333s] writing crazyflie_sim.egg-info/PKG-INFO
+[1.334s] writing dependency_links to crazyflie_sim.egg-info/dependency_links.txt
+[1.334s] writing entry points to crazyflie_sim.egg-info/entry_points.txt
+[1.334s] writing top-level names to crazyflie_sim.egg-info/top_level.txt
+[1.334s] writing manifest file 'crazyflie_sim.egg-info/SOURCES.txt'
+[1.335s] reading manifest file 'crazyflie_sim.egg-info/SOURCES.txt'
+[1.335s] writing manifest file 'crazyflie_sim.egg-info/SOURCES.txt'
+[1.362s] Built target ament_cmake_python_build_crazyflie_sim_egg
+[1.385s] running install_scripts
+[1.388s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[1.388s]   warnings.warn(
+[1.416s] running egg_info
+[1.417s] writing crazyflie_sim.egg-info/PKG-INFO
+[1.417s] writing dependency_links to crazyflie_sim.egg-info/dependency_links.txt
+[1.417s] writing entry points to crazyflie_sim.egg-info/entry_points.txt
+[1.417s] writing top-level names to crazyflie_sim.egg-info/top_level.txt
+[1.420s] reading manifest file 'crazyflie_sim.egg-info/SOURCES.txt'
+[1.420s] writing manifest file 'crazyflie_sim.egg-info/SOURCES.txt'
+[1.422s] Installing crazyflie_server script to scripts
+[1.452s] Built target ament_cmake_python_build_crazyflie_sim_scripts
+[1.464s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim' returned '0': AMENT_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim -- -j20 -l20
+[1.465s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim': AMENT_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim
+[1.474s] -- Install configuration: ""
+[1.474s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/environment/pythonpath.sh
+[1.474s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/environment/pythonpath.dsv
+[1.475s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim-1.0.3-py3.10.egg-info
+[1.475s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim-1.0.3-py3.10.egg-info/top_level.txt
+[1.475s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim-1.0.3-py3.10.egg-info/SOURCES.txt
+[1.475s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim-1.0.3-py3.10.egg-info/PKG-INFO
+[1.475s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim-1.0.3-py3.10.egg-info/entry_points.txt
+[1.476s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim-1.0.3-py3.10.egg-info/dependency_links.txt
+[1.476s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/lib/crazyflie_sim/
+[1.476s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/lib/crazyflie_sim//crazyflie_server
+[1.476s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim
+[1.476s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/crazyflie_server.py
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/__init__.py
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/crazyflie_sil.py
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/np.py
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/none.py
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/pinocchio.py
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/neuralswarm.py
+[1.477s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/dynobench.py
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/neuralswarm2
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/neuralswarm2/phi_S.pth
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/neuralswarm2/rho_S.pth
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/neuralswarm2/phi_L.pth
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/neuralswarm2/rho_L.pth
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/neuralswarm2/phi_G.pth
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/dynobench
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/dynobench/crazyflie2.yaml
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/pinocchio
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/pinocchio/crazyflie2.urdf
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/record_states.py
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/rviz.py
+[1.478s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/blender.py
+[1.479s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/pdf.py
+[1.479s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data
+[1.479s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env
+[1.479s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/machine_shop.jpg
+[1.479s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/lago_disola.jpg
+[1.479s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/lake_pier.jpg
+[1.480s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/derelict_overpass.jpg
+[1.480s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/aerodynamics_workshop.jpg
+[1.480s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/crosswalk.jpg
+[1.480s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/abandoned_greenhouse.jpg
+[1.481s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/env.jpg
+[1.481s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/aviation_museum.jpg
+[1.481s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/studio_garden.jpg
+[1.481s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/museumplein.jpg
+[1.481s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env/peppermint_powerplant.jpg
+[1.481s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/model
+[1.481s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/model/cf.obj
+[1.482s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/model/cf.mtl
+[1.482s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/README.md
+[1.482s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/README.md
+[1.482s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/sim_data_types.py
+[1.533s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim'...
+[1.533s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/__init__.py'...
+[1.533s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend'...
+[1.533s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data'...
+[1.533s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/dynobench'...
+[1.533s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/neuralswarm2'...
+[1.534s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/data/pinocchio'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/dynobench.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/neuralswarm.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/none.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/np.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/backend/pinocchio.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/crazyflie_server.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/crazyflie_sil.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/sim_data_types.py'...
+[1.534s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/blender.py'...
+[1.534s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data'...
+[1.534s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/env'...
+[1.534s] Listing '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/data/model'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/pdf.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/record_states.py'...
+[1.534s] Compiling '/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/local/lib/python3.10/dist-packages/crazyflie_sim/visualization/rviz.py'...
+[1.537s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/ament_index/resource_index/package_run_dependencies/crazyflie_sim
+[1.537s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/ament_index/resource_index/parent_prefix_path/crazyflie_sim
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/environment/ament_prefix_path.sh
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/environment/ament_prefix_path.dsv
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/environment/path.sh
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/environment/path.dsv
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/local_setup.bash
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/local_setup.sh
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/local_setup.zsh
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/local_setup.dsv
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/package.dsv
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/ament_index/resource_index/packages/crazyflie_sim
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/cmake/crazyflie_simConfig.cmake
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/cmake/crazyflie_simConfig-version.cmake
+[1.538s] -- Installing: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_sim/share/crazyflie_sim/package.xml
+[1.540s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim' returned '0': AMENT_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim

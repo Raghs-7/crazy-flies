@@ -1,0 +1,22 @@
+running develop
+running egg_info
+creating crazyflie_ros2_multiranger_simple_mapper.egg-info
+writing crazyflie_ros2_multiranger_simple_mapper.egg-info/PKG-INFO
+writing dependency_links to crazyflie_ros2_multiranger_simple_mapper.egg-info/dependency_links.txt
+writing entry points to crazyflie_ros2_multiranger_simple_mapper.egg-info/entry_points.txt
+writing requirements to crazyflie_ros2_multiranger_simple_mapper.egg-info/requires.txt
+writing top-level names to crazyflie_ros2_multiranger_simple_mapper.egg-info/top_level.txt
+writing manifest file 'crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+reading manifest file 'crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+writing manifest file 'crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages/crazyflie-ros2-multiranger-simple-mapper.egg-link (link to .)
+Installing simple_mapper_multiranger script to /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/crazyflie_ros2_multiranger_simple_mapper
+
+Installed /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper
+running symlink_data
+creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index
+creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index/resource_index
+creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index/resource_index/packages
+symbolically linking /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/resource/crazyflie_ros2_multiranger_simple_mapper -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index/resource_index/packages
+symbolically linking /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/package.xml -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/crazyflie_ros2_multiranger_simple_mapper

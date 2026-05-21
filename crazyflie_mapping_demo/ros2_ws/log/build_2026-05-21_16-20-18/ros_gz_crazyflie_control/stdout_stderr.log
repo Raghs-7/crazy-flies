@@ -1,0 +1,32 @@
+running develop
+Removing /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros-gz-crazyflie-control.egg-link (link to .)
+running egg_info
+writing ../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info/PKG-INFO
+writing dependency_links to ../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info/dependency_links.txt
+writing entry points to ../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info/entry_points.txt
+writing requirements to ../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info/requires.txt
+writing top-level names to ../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info/top_level.txt
+reading manifest file '../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info/SOURCES.txt'
+writing manifest file '../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build
+creating /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build/lib
+creating /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build/lib/ros_gz_crazyflie_control
+copying ros_gz_crazyflie_control/__init__.py -> /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build/lib/ros_gz_crazyflie_control
+copying ros_gz_crazyflie_control/control_services.py -> /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build/lib/ros_gz_crazyflie_control
+running install
+running install_lib
+creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros_gz_crazyflie_control
+copying /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build/lib/ros_gz_crazyflie_control/__init__.py -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros_gz_crazyflie_control
+copying /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build/lib/ros_gz_crazyflie_control/control_services.py -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros_gz_crazyflie_control
+byte-compiling /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros_gz_crazyflie_control/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros_gz_crazyflie_control/control_services.py to control_services.cpython-310.pyc
+running install_data
+copying resource/ros_gz_crazyflie_control -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/share/ament_index/resource_index/packages
+copying package.xml -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/share/ros_gz_crazyflie_control
+running install_egg_info
+Copying ../../../build/ros_gz_crazyflie_control/ros_gz_crazyflie_control.egg-info to /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros_gz_crazyflie_control-0.0.0-py3.10.egg-info
+running install_scripts
+Installing control_services script to /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/ros_gz_crazyflie_control
+writing list of installed files to '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/install.log'

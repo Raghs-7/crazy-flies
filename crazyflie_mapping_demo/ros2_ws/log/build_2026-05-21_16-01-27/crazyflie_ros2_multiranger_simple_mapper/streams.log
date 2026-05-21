@@ -1,0 +1,24 @@
+[0.693s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper': PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/build --no-deps symlink_data
+[0.874s] running develop
+[0.958s] running egg_info
+[0.958s] creating crazyflie_ros2_multiranger_simple_mapper.egg-info
+[0.958s] writing crazyflie_ros2_multiranger_simple_mapper.egg-info/PKG-INFO
+[0.959s] writing dependency_links to crazyflie_ros2_multiranger_simple_mapper.egg-info/dependency_links.txt
+[0.959s] writing entry points to crazyflie_ros2_multiranger_simple_mapper.egg-info/entry_points.txt
+[0.959s] writing requirements to crazyflie_ros2_multiranger_simple_mapper.egg-info/requires.txt
+[0.959s] writing top-level names to crazyflie_ros2_multiranger_simple_mapper.egg-info/top_level.txt
+[0.959s] writing manifest file 'crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+[0.960s] reading manifest file 'crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+[0.960s] writing manifest file 'crazyflie_ros2_multiranger_simple_mapper.egg-info/SOURCES.txt'
+[0.960s] running build_ext
+[0.960s] Creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages/crazyflie-ros2-multiranger-simple-mapper.egg-link (link to .)
+[0.961s] Installing simple_mapper_multiranger script to /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/crazyflie_ros2_multiranger_simple_mapper
+[0.961s] 
+[0.961s] Installed /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper
+[0.962s] running symlink_data
+[0.962s] creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index
+[0.962s] creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index/resource_index
+[0.962s] creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index/resource_index/packages
+[0.962s] symbolically linking /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/resource/crazyflie_ros2_multiranger_simple_mapper -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/ament_index/resource_index/packages
+[0.962s] symbolically linking /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/package.xml -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/share/crazyflie_ros2_multiranger_simple_mapper
+[0.980s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper' returned '0': PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_simple_mapper/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_simple_mapper/build --no-deps symlink_data

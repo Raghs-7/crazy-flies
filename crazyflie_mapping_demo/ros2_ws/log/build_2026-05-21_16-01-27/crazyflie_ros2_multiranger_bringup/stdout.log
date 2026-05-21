@@ -1,0 +1,31 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found ros_gz_crazyflie_bringup: 0.0.0 (/home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_bringup/share/ros_gz_crazyflie_bringup/cmake)
+-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_ros2_multiranger_bringup
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//launch/simple_mapper_real.launch.py
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//launch/simple_mapper_simulation.launch.py
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//launch/two_drones_mapper_simulation.launch.py
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//launch/wall_follower_mapper_real.launch.py
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//launch/wall_follower_mapper_simulation.launch.py
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//config/crazyflie_real_crazyswarm2.yaml
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//config/real_mapping.rviz
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//config/sim_mapping.rviz
+-- Symlinking: /home/raghav/crazyflie_mapping_demo/ros2_ws/install/crazyflie_ros2_multiranger_bringup/share/crazyflie_ros2_multiranger_bringup//config/two_cf_crazyswarm2.yaml

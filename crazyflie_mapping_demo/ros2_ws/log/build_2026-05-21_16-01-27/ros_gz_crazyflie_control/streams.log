@@ -1,0 +1,24 @@
+[0.691s] Invoking command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control': PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build --no-deps symlink_data
+[0.839s] running develop
+[0.922s] running egg_info
+[0.923s] creating ros_gz_crazyflie_control.egg-info
+[0.923s] writing ros_gz_crazyflie_control.egg-info/PKG-INFO
+[0.923s] writing dependency_links to ros_gz_crazyflie_control.egg-info/dependency_links.txt
+[0.923s] writing entry points to ros_gz_crazyflie_control.egg-info/entry_points.txt
+[0.923s] writing requirements to ros_gz_crazyflie_control.egg-info/requires.txt
+[0.924s] writing top-level names to ros_gz_crazyflie_control.egg-info/top_level.txt
+[0.924s] writing manifest file 'ros_gz_crazyflie_control.egg-info/SOURCES.txt'
+[0.924s] reading manifest file 'ros_gz_crazyflie_control.egg-info/SOURCES.txt'
+[0.924s] writing manifest file 'ros_gz_crazyflie_control.egg-info/SOURCES.txt'
+[0.925s] running build_ext
+[0.925s] Creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages/ros-gz-crazyflie-control.egg-link (link to .)
+[0.925s] Installing control_services script to /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/ros_gz_crazyflie_control
+[0.926s] 
+[0.926s] Installed /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control
+[0.927s] running symlink_data
+[0.927s] creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/share/ament_index
+[0.927s] creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/share/ament_index/resource_index
+[0.927s] creating /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/share/ament_index/resource_index/packages
+[0.927s] symbolically linking /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/resource/ros_gz_crazyflie_control -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/share/ament_index/resource_index/packages
+[0.927s] symbolically linking /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/package.xml -> /home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/share/ros_gz_crazyflie_control
+[0.947s] Invoked command in '/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control' returned '0': PYTHONPATH=/home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/raghav/crazyflie_mapping_demo/ros2_ws/install/ros_gz_crazyflie_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/raghav/crazyflie_mapping_demo/ros2_ws/build/ros_gz_crazyflie_control/build --no-deps symlink_data

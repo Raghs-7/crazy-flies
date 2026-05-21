@@ -1,0 +1,106 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-40182da5a2570222c201.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "crazyflie_sim",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_crazyflie_sim_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_crazyflie_sim_egg-1ddd45ccf48a20d41bf0.json",
+					"name" : "ament_cmake_python_build_crazyflie_sim_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_crazyflie_sim_scripts::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_crazyflie_sim_scripts-bfbe014f32a652bfb667.json",
+					"name" : "ament_cmake_python_build_crazyflie_sim_scripts",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_crazyflie_sim::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_crazyflie_sim-430e7eb539c309d6c1c6.json",
+					"name" : "ament_cmake_python_copy_crazyflie_sim",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_crazyflie_sim_setup::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_crazyflie_sim_setup-154e007bf61ce652e436.json",
+					"name" : "ament_cmake_python_copy_crazyflie_sim_setup",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "crazyflie_sim_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-crazyflie_sim_uninstall-1ae53414bb740d134787.json",
+					"name" : "crazyflie_sim_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-56ad20aa17b313047228.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/raghav/crazyflie_mapping_demo/ros2_ws/build/crazyflie_sim",
+		"source" : "/home/raghav/crazyflie_mapping_demo/ros2_ws/src/crazyswarm2/crazyflie_sim"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
