@@ -17,7 +17,7 @@ from cflib.utils import uri_helper
 # With the LPS deck the Kalman filter already knows the drone's
 # absolute lab position — resetting it would destroy that information.
 
-uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E2')
+uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E701')
 
 # -------- Safe zone (your lab square) --------
 # Vertices: (0,1), (0,4), (3,1), (3,4)
@@ -36,7 +36,7 @@ DT     = 0.1    # seconds per waypoint (10 Hz)
 FLY_Z  = 0.6    # cruise altitude (m)
 
 # How long to wait for the LPS estimator to converge at boot
-LPS_SETTLE_TIME = 3.0   # seconds
+LPS_SETTLE_TIME = 10.0   # seconds
 
 # -------- Logging globals --------
 log_data_list = []
@@ -139,28 +139,84 @@ def save_log_to_csv(log_data, filename='/home/dewang/trajectory_log.csv'):
     print(f"Saved CSV: {filename}")
 
 
-# -------- PLOTTING ----------
+# -------- PLOTTING & ERROR ANALYSIS ----------
 
 def plot_and_save_data(log_data):
     if not log_data:
         print('No data to plot.')
         return
 
+    # Convert timestamps to relative seconds
     t  = np.array([d['time']       for d in log_data]) / 1000.0
     t -= t[0]
 
+    # Extract positions into numpy arrays
     ax_arr = np.array([d['actual_x']   for d in log_data])
     ay_arr = np.array([d['actual_y']   for d in log_data])
     az_arr = np.array([d['actual_z']   for d in log_data])
+    
     ex_arr = np.array([d['expected_x'] for d in log_data])
     ey_arr = np.array([d['expected_y'] for d in log_data])
+    ez_arr = np.array([d['expected_z'] for d in log_data])
 
+    # -------------------------------------------------------------
+    # 1. ERROR CALCULATION
+    # -------------------------------------------------------------
+    # Mean Absolute Error (MAE) per axis
+    error_x = np.mean(np.abs(ax_arr - ex_arr))
+    error_y = np.mean(np.abs(ay_arr - ey_arr))
+    error_z = np.mean(np.abs(az_arr - ez_arr))
+
+    print("\n" + "="*40)
+    print("      AXIS-WISE TRACKING AVERAGE ERROR      ")
+    print("="*40)
+    print(f"X-Axis Mean Error: {error_x:.4f} meters")
+    print(f"Y-Axis Mean Error: {error_y:.4f} meters")
+    print(f"Z-Axis Mean Error: {error_z:.4f} meters")
+    print("="*40 + "\n")
+
+    # -------------------------------------------------------------
+    # 2. PLOT AXIS-WISE TIMELINE COMPARISON (NEW)
+    # -------------------------------------------------------------
+    fig_axis, axs = plt.subplots(3, 1, figsize=(11, 11), sharex=True)
+
+    # X-axis timeline
+    axs[0].plot(t, ex_arr, 'g--', label='Expected X (Target)', linewidth=2)
+    axs[0].plot(t, ax_arr, 'r-', label='Actual X (LPS Feedback)', alpha=0.8)
+    axs[0].set_ylabel('X Position (m)')
+    axs[0].set_title(f'X-Axis Tracking Timeline (Avg Error: {error_x:.3f}m)')
+    axs[0].grid(True)
+    axs[0].legend(loc='upper right')
+
+    # Y-axis timeline
+    axs[1].plot(t, ey_arr, 'g--', label='Expected Y (Target)', linewidth=2)
+    axs[1].plot(t, ay_arr, 'r-', label='Actual Y (LPS Feedback)', alpha=0.8)
+    axs[1].set_ylabel('Y Position (m)')
+    axs[1].set_title(f'Y-Axis Tracking Timeline (Avg Error: {error_y:.3f}m)')
+    axs[1].grid(True)
+    axs[1].legend(loc='upper right')
+
+    # Z-axis timeline
+    axs[2].plot(t, ez_arr, 'g--', label='Expected Z (Target)', linewidth=2)
+    axs[2].plot(t, az_arr, 'r-', label='Actual Z (LPS Feedback)', alpha=0.8)
+    axs[2].set_xlabel('Time (seconds)')
+    axs[2].set_ylabel('Z Position (m)')
+    axs[2].set_title(f'Z-Axis Tracking Timeline (Avg Error: {error_z:.3f}m)')
+    axs[2].grid(True)
+    axs[2].legend(loc='upper right')
+
+    plt.tight_layout()
+    plt.savefig("/home/dewang/trajectory_axis_wise.png")
+    print("Saved trajectory_axis_wise.png")
+
+    # -------------------------------------------------------------
+    # 3. ORIGINAL TOP-DOWN XY PLOT
+    # -------------------------------------------------------------
     bx = [SAFE_X_MIN, SAFE_X_MAX, SAFE_X_MAX, SAFE_X_MIN, SAFE_X_MIN]
     by = [SAFE_Y_MIN, SAFE_Y_MIN, SAFE_Y_MAX, SAFE_Y_MAX, SAFE_Y_MIN]
 
     plt.figure()
     plt.plot(bx, by, 'r--', linewidth=1.5, label='Safety boundary')
-    # Mark spawn point
     if spawn_x is not None:
         plt.plot(spawn_x, spawn_y, 'ko', markersize=8, label=f'Spawn ({spawn_x:.2f},{spawn_y:.2f})')
     plt.plot(CIRCLE_CENTER_X, CIRCLE_CENTER_Y, 'g+', markersize=12,
@@ -175,13 +231,23 @@ def plot_and_save_data(log_data):
     plt.savefig("/home/dewang/trajectory_xy_topdown.png")
     print("Saved trajectory_xy_topdown.png")
 
-    fig = plt.figure()
-    ax3 = fig.add_subplot(111, projection='3d')
-    ax3.plot(ax_arr, ay_arr, az_arr, label='Actual')
-    ax3.set_xlabel('X'); ax3.set_ylabel('Y'); ax3.set_zlabel('Z')
+    # -------------------------------------------------------------
+    # 4. ORIGINAL 3D PLOT
+    # -------------------------------------------------------------
+    fig_3d = plt.figure()
+    ax3 = fig_3d.add_subplot(111, projection='3d')
+    ax3.plot(ax_arr, ay_arr, az_arr, label='Actual', color='red')
+    ax3.plot(ex_arr, ey_arr, ez_arr, 'g--', label='Expected')
+    ax3.set_xlabel('X (m)')
+    ax3.set_ylabel('Y (m)')
+    ax3.set_zlabel('Z (m)')
+    ax3.set_title("3D Trajectory Comparison")
     ax3.legend()
     plt.savefig("/home/dewang/trajectory_3d.png")
     print("Saved trajectory_3d.png")
+    
+    # Displays all interactive plots cleanly if window environments allow
+    plt.show()
 
 
 # -------- MAIN SEQUENCE ----------
@@ -191,12 +257,7 @@ def run_sequence(cf):
 
     commander = cf.high_level_commander
 
-    # ------------------------------------------------------------------
     # READ SPAWN POSITION FROM LPS
-    # This is the key difference from the old script.
-    # The drone uses its LPS fix to know exactly where it is in the lab
-    # before any motion command is sent.
-    # ------------------------------------------------------------------
     spawn_x, spawn_y, spawn_z = read_lps_position(cf)
     print(f"LPS spawn position: x={spawn_x:.3f}  y={spawn_y:.3f}  z={spawn_z:.3f}")
 
@@ -218,35 +279,19 @@ def run_sequence(cf):
         cf.platform.send_arming_request(True)
     time.sleep(1.0)
 
-    # ------------------------------------------------------------------
-    # PHASE 1 — TAKEOFF
-    # Climbs vertically from wherever it spawned. Uses absolute Z.
-    # ------------------------------------------------------------------
     print("Phase 1: Taking off ...")
     commander.takeoff(FLY_Z, 2.5)
     time.sleep(3.5)
 
-    # ------------------------------------------------------------------
-    # PHASE 2 — FLY TO CIRCLE CENTRE (absolute, not relative)
-    #
-    # OLD code used relative=True which worked only when spawn=(0,0).
-    # Now we fly to the fixed absolute lab centre (1.5, 2.5) regardless
-    # of where the drone spawned.
-    #
-    # Travel distance from spawn to centre:
     dist = math.sqrt((CIRCLE_CENTER_X - spawn_x)**2 +
                      (CIRCLE_CENTER_Y - spawn_y)**2)
-    # Allow ~1 s per 0.5 m, minimum 3 s
     travel_time = max(3.0, dist / 0.5)
-    # ------------------------------------------------------------------
+
     print(f"Phase 2: Flying to circle centre (dist={dist:.2f} m, t={travel_time:.1f} s) ...")
     commander.go_to(CIRCLE_CENTER_X, CIRCLE_CENTER_Y, FLY_Z,
                     yaw=0.0, duration_s=travel_time, relative=False)
     time.sleep(travel_time + 0.5)
 
-    # ------------------------------------------------------------------
-    # PHASE 3 — CIRCLE (absolute waypoints, same as before)
-    # ------------------------------------------------------------------
     print(f"Phase 3: Circle — r={RADIUS} m, ω={OMEGA} rad/s, {CIRCLE_DURATION} s ...")
 
     steps = int(CIRCLE_DURATION / DT)
@@ -264,9 +309,6 @@ def run_sequence(cf):
         theta += OMEGA * DT
         time.sleep(DT)
 
-    # ------------------------------------------------------------------
-    # PHASE 4 — LAND
-    # ------------------------------------------------------------------
     print("Phase 4: Landing ...")
     commander.land(0.0, duration_s=3.0)
     time.sleep(3.5)
@@ -284,7 +326,6 @@ if __name__ == '__main__':
     with SyncCrazyflie(uri, cf=Crazyflie(rw_cache='./cache')) as scf:
         cf = scf.cf
 
-        # Do NOT call reset_estimator() here — LPS gives us a real position
         setup_logging(cf)
         run_sequence(cf)
 
