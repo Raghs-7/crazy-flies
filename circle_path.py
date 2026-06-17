@@ -48,7 +48,7 @@ spawn_y = None
 spawn_z = None
 
 
-# -------- POSITION READING --------
+# -------- POSITION READING -------
 
 def read_lps_position(cf):
     """
