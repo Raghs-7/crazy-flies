@@ -1,319 +1,235 @@
-# Crazyflie Autonomous Missions
+# Crazyflie Autonomous Flight, Localization & Swarm Control
 
-This repository contains the Bitcraze Crazyflie Python library integrated with autonomous flight missions, trajectory generation systems, and multi-UAV swarm experiments using the Loco Positioning System (LPS).
+A comprehensive repository documenting the development of autonomous flight control, trajectory generation, localization, simulation, and multi-drone swarming using the **Bitcraze Crazyflie 2.x** platform.
 
-The project focuses on:
+This repository contains the complete workflow followed during the internship/project—from understanding the Crazyflie architecture and tuning the onboard controllers to implementing multi-drone coordination and validating algorithms in simulation before deploying them on hardware.
 
-- Autonomous indoor navigation
-- Trajectory planning and control
-- Real-time telemetry logging
-- Multi-UAV synchronized flight
-- Swarm coordination in LPS environments
-- Trajectory error analysis and evaluation
+---
+
+## Project Overview
+
+The primary objective of this project was to understand the complete software and hardware stack of the Crazyflie ecosystem and progressively develop reliable autonomous flight capabilities.
+
+The work includes:
+
+* Understanding the Crazyflie firmware architecture
+* Studying the Position High-Level Commander
+* Investigating the Loco Positioning System (LPS)
+* Learning Two-Way Ranging (TWR) localization
+* PID tuning for stable autonomous flight
+* Single-drone trajectory generation
+* Multi-drone coordination using multithreading
+* Boids-based swarm behaviour
+* ROS 2 & Gazebo simulation
+* CrazySwarm integration
+* Localization optimization through anchor placement
 
 ---
 
 # Repository Structure
 
-Development uses two separate repositories.
-
-## 1. Crazyflie Client Repository
-
-Used for:
-
-- Running the Crazyflie desktop client
-- Connecting to Crazyflie drones
-- Monitoring console logs
-- Verifying radio communication
-- Checking estimator convergence
-- Testing LPS positioning stability
-
-Clone repository:
-
-```bash
-git clone https://github.com/bitcraze/crazyflie-clients-python.git
+```text
+.
+├── single_drone/
+│   ├── circle_trajectory/
+│   └── figure8_trajectory/
+│
+├── multi_drone/
+│   ├── two_drone_circle/
+│   └── swarming/
+│
+├── simulation/
+│   ├── gazebo/
+│   └── ros2_swarm/
+│
+├── launch/
+│
+└── README.md
 ```
 
 ---
 
-## 2. Crazyflie Python Library
+# Features
 
-Used for:
+## Autonomous Flight
 
-- Running Python-based autonomous missions
-- Implementing flight trajectories
-- Building swarm coordination systems
-- Executing synchronized UAV operations
-- Logging and evaluating trajectory performance
+* Takeoff & Landing
+* Hover Control
+* Position Control
+* Waypoint Navigation
 
-Clone repository:
+---
 
-```bash
-git clone https://github.com/bitcraze/crazyflie-lib-python.git
+## Trajectory Generation
+
+Implemented trajectories include:
+
+* Circular Trajectory
+* Figure-8 Trajectory
+* Multi-drone Circular Flight
+
+Trajectory plots and logs are included with each implementation.
+
+---
+
+## Localization
+
+The project investigates the complete Loco Positioning System including:
+
+* Two-Way Ranging (TWR)
+* Anchor configuration
+* Position estimation
+* Kalman Filter based localization
+* Anchor placement optimization
+
+Several localization issues encountered during experimentation are documented together with the corresponding solutions.
+
+---
+
+## PID Tuning
+
+Extensive PID tuning was performed using the Crazyflie Client.
+
+Topics covered include:
+
+* Effect of Proportional Gain
+* Integral Windup
+* Derivative Damping
+* Oscillation Reduction
+* Trajectory Tracking Improvement
+
+Both pre- and post-tuning flight behaviour are documented.
+
+---
+
+## Multi-Drone Control
+
+Implementation of concurrent control for multiple Crazyflies using Python multithreading.
+
+Features include:
+
+* Independent communication links
+* Synchronized takeoff
+* Parallel trajectory execution
+* Two-drone circular flight
+
+---
+
+## Swarm Behaviour
+
+Implementation of a Boids-inspired swarm algorithm incorporating:
+
+* Separation
+* Alignment
+* Cohesion
+
+The repository includes both simulation and hardware experiments.
+
+---
+
+## Simulation
+
+Before deployment on real hardware, all algorithms were validated in simulation.
+
+Simulation stack:
+
+* ROS 2
+* Gazebo
+* CrazySwarm
+
+This significantly reduced hardware failures and enabled safe debugging.
+
+---
+
+# Challenges Faced
+
+Throughout the project several practical challenges were encountered, including:
+
+* High localization variance
+* Motor failures due to repeated crashes
+* TWR communication issues
+* Anchor placement inaccuracies
+* PID instability
+* Integral windup
+* Multi-drone synchronization
+* Communication latency
+
+Each challenge is documented together with the engineering approach used to resolve it.
+
+---
+
+# Technologies Used
+
+### Hardware
+
+* Bitcraze Crazyflie 2.x
+* Loco Positioning System
+* Loco Anchors
+* Crazyradio PA
+
+### Software
+
+* Python
+* cflib
+* Crazyflie Client (CFClient)
+* ROS 2
+* Gazebo
+* CrazySwarm
+* Ubuntu Linux
+
+---
+
+# Experimental Workflow
+
+```
+Understand Crazyflie
+          │
+          ▼
+Learn Position Commander
+          │
+          ▼
+Single Drone Flights
+          │
+          ▼
+PID Tuning
+          │
+          ▼
+Trajectory Tracking
+          │
+          ▼
+Localization Optimization
+          │
+          ▼
+Simulation using ROS2 + Gazebo
+          │
+          ▼
+Multi-Drone Control
+          │
+          ▼
+Swarm Behaviour
 ```
 
 ---
 
-# Implemented Flight Missions
+# Future Work
 
-The following autonomous missions and trajectory systems have been implemented successfully:
-
-- Simple Autonomous Takeoff and Landing
-- 3D Space Launch
-- Square Path Trajectory
-- Figure-8 Trajectory
-- Circular Path Trajectory
-- Dynamic Circular Swarm Motion
-- Multi-UAV Simultaneous Flight
-- Seeded Node Navigation System
+* Obstacle Avoidance
+* Formation Control
+* Vision-Based Localization
+* SLAM Integration
+* Dynamic Path Planning
+* Large Scale Swarms
+* Reinforcement Learning for Swarm Navigation
 
 ---
 
-# Swarm Flight System
+# Acknowledgements
 
-The repository now supports simultaneous autonomous flight of two Crazyflie UAVs executing synchronized trajectories inside a shared LPS environment.
-
-Current swarm capabilities include:
-
-- Simultaneous takeoff and landing
-- Synchronized trajectory execution
-- Dynamic circular motion
-- Phase-offset coordinated flight
-- Independent flight altitudes
-- Real-time position logging
-- Trajectory visualization
-- Mean Squared Error (MSE) path evaluation
-- Safe multi-UAV separation
-
-The current implementation supports:
-
-| UAV | Flight Height |
-|---|---|
-| UAV 1 | 0.6 m |
-| UAV 2 | 1.0 m |
-
-Both UAVs execute synchronized circular trajectories while operating at different altitude layers for improved operational safety.
+This work was carried out as part of an internship/project focused on autonomous aerial robotics using the Crazyflie platform. The project builds upon the open-source ecosystem developed by Bitcraze and the robotics community.
 
 ---
 
-# Swarm Development Goals
+## License
 
-Current swarm research focuses on:
+This repository is intended for educational and research purposes.
 
-- Stable synchronized motion
-- Reliable multi-radio communication
-- Collision-safe formation control
-- Dynamic trajectory generation
-- Real-time trajectory correction
-- Scalable swarm architectures
-- Robust indoor autonomous coordination
-
-Future objectives include:
-
-- Multi-UAV formation control
-- Dynamic obstacle avoidance
-- Decentralized swarm coordination
-- Autonomous mission planning
-- Real-time distributed navigation
-
----
-
-# Current Mission: Seeded Node Navigator
-
-The Seeded Node Navigator mission is designed for reliable autonomous navigation inside known LPS environments.
-
-Instead of polling anchor coordinates dynamically through radio communication, the system loads predefined seeded coordinates from a local configuration file.
-
-The UAV maintains a configurable safety buffer from anchors during navigation to avoid collisions with LPS infrastructure.
-
----
-
-# Mission Workflow
-
-During execution, the system performs the following sequence:
-
-1. Initialize seeded coordinates for all LPS anchors
-2. Load anchor configuration locally
-3. Sort anchors by ID
-4. Navigate sequentially between anchors
-5. Maintain safety buffer distance
-6. Hold constant hover altitude
-7. Execute waypoint traversal
-8. Navigate toward landing zone
-9. Perform controlled vertical landing
-
----
-
-# Autonomous Trajectory System
-
-The repository includes trajectory systems for:
-
-- Circular trajectories
-- Figure-8 motion
-- Square waypoint paths
-- Dynamic center computation
-- Phase-shifted synchronized motion
-- Real-time path correction
-- Multi-UAV coordinated flight
-
-Trajectory accuracy is evaluated using:
-
-- Real-time position logging
-- Path deviation tracking
-- Mean Squared Error (MSE)
-- CSV telemetry logging
-- Trajectory visualization plots
-
----
-
-# System Requirements
-
-Required hardware:
-
-- Crazyflie 2.x
-- Crazyradio PA
-- Loco Positioning System (LPS)
-- Positioning deck
-- Fully charged batteries
-
-Recommended for swarm experiments:
-
-- Two Crazyradio adapters
-- Dedicated radio channels per UAV
-- Stable anchor placement
-- Low-interference environment
-
----
-
-# Environment Setup
-
-## 1. Clone Repositories
-
-### Crazyflie Client
-
-```bash
-git clone https://github.com/bitcraze/crazyflie-clients-python.git
-```
-
-### Crazyflie Python Library
-
-```bash
-git clone https://github.com/bitcraze/crazyflie-lib-python.git
-```
-
----
-
-# Running the Crazyflie Client
-
-Navigate into the Crazyflie client repository:
-
-```bash
-cd crazyflie-clients-python
-```
-
-Activate the environment:
-
-```bash
-source env/bin/activate
-```
-
-Run the client:
-
-```bash
-cfclient
-```
-
----
-
-# Connecting the UAV
-
-1. Connect the Crazyradio
-2. Power the Crazyflie
-3. Open the Crazyflie client
-4. Connect to the drone
-5. Verify estimator convergence
-6. Verify LPS positioning stability
-7. Check battery levels
-8. Confirm radio communication
-
-After all checks are completed, close the client terminal.
-
----
-
-# Running Autonomous Missions
-
-Open a second terminal and navigate into the Python library repository:
-
-```bash
-cd crazyflie-lib-python
-```
-
-Run any mission script:
-
-```bash
-python3 filename.py
-```
-
-Example:
-
-```bash
-python3 circle_test.py
-```
-
----
-
-# Example Swarm Mission
-
-## Circular Swarm Motion
-
-```bash
-python3 swarm_circle.py
-```
-
-Mission features:
-
-- Simultaneous multi-UAV flight
-- Synchronized circular trajectories
-- Independent flight heights
-- Real-time trajectory logging
-- MSE trajectory evaluation
-- Dynamic trajectory generation
-
----
-
-# Safety Notes
-
-Before flight:
-
-- Ensure the LPS system is active
-- Verify anchor stability
-- Confirm Crazyradio connectivity
-- Check battery levels
-- Wait for estimator convergence
-- Clear the flight environment
-- Verify radio configuration
-- Test UAVs individually before swarm launch
-
-For swarm operations:
-
-- Maintain vertical separation
-- Avoid overlapping startup positions
-- Monitor radio packet stability
-- Ensure synchronized estimator readiness
-
----
-
-# Research and Development Focus
-
-This project is currently focused on developing a modular indoor UAV swarm framework using Crazyflie platforms and LPS-based localization systems.
-
-Primary research areas include:
-
-- Autonomous indoor swarm navigation
-- Real-time trajectory control
-- Multi-UAV synchronization
-- Precision path tracking
-- Distributed swarm coordination
-- Autonomous mission execution
-- Indoor formation control
-- Reliable swarm communication systems
