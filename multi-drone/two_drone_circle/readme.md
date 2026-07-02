@@ -43,7 +43,9 @@ The program performs:
 The onboard position controllers execute the received position commands independently.
 
 ---
+## Demonstration Video
 
+[Watch the Dual Drone Circular Flight Demo](Dual_drone_show.mp4)
 ## Challenges
 
 During development, several issues were encountered:
