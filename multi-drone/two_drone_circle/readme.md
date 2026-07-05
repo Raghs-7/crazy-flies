@@ -45,7 +45,7 @@ The onboard position controllers execute the received position commands independ
 ---
 ## Demonstration Video
 
-[Watch the Dual Drone Circular Flight Demo](Dual_drone_show.mp4)
+[Watch the Dual Drone Circular Flight Demo](https://drive.google.com/file/d/15mfLE9bK-xCZH9vjKYqjsXOArD6pt6ze/view?usp=drive_link)
 ## Challenges
 
 During development, several issues were encountered:
