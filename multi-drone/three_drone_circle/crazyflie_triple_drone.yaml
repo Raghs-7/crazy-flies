@@ -1,0 +1,38 @@
+robots:
+  cf2:
+    enabled: true
+    uri: radio://0/80/2M/E7E7E7E702
+    initial_position: [1.0, 2.0, 0.0]
+    type: default
+
+  cf3:
+    enabled: true
+    uri: radio://0/80/2M/E7E7E7E703
+    initial_position: [2.0, 2.5, 0.0]
+    type: default
+
+  cf4:
+    enabled: true
+    uri: radio://0/80/2M/E7E7E7E704
+    initial_position: [3.0, 3.0, 0.0]
+    type: default
+
+robot_types:
+  default:
+    motion_capture:
+      enabled: false
+
+    firmware_logging:
+      enabled: true
+
+      default_topics:
+        pose:
+          frequency: 10
+
+    firmware_params:
+      commander:
+        enHighLevel: 1
+
+      stabilizer:
+        estimator: 2
+        controller: 2
