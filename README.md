@@ -30,12 +30,14 @@ The work includes:
 
 ```text
 .
+.
 ├── single_drone/
 │   ├── circle_trajectory/
 │   └── figure8_trajectory/
 │
 ├── multi_drone/
 │   ├── two_drone_circle/
+│   ├── triple_drone_circle/
 │   └── swarming/
 │
 ├── simulation/
@@ -232,4 +234,3 @@ This work was carried out as part of an internship/project focused on autonomous
 ## License
 
 This repository is intended for educational and research purposes.
-
