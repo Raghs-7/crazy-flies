@@ -23,8 +23,8 @@ STATUS IS REPORT-ONLY
   it NEVER stops or lands a drone. A late follower simply keeps walking through the queue
   (reference = the oldest unreached checkpoint) until it has caught up.
   Only real safety conditions end a flight: Ctrl+C, radio/position data lost, a drone
-  leaving the safe zone, the leader drifting from its own command, the --duration cap, or
-  "leader finished AND queue empty".
+  leaving the safe zone, the --duration cap, or
+  leader moves to PARK_X/PARK_Y/PARK_Z and lands after feeding its final samples; follower drains the queue.
 
 CONTROLLER (unchanged TG-DPAC)
   reference  : p_leader(t - TAU)               while the head checkpoint is not due yet
@@ -91,6 +91,10 @@ ZONE_BREACH = 0.15
 
 FLY_Z = 0.6
 LEADER_Z = 0.6
+# ---- leader parking point (EDIT THESE IN THE CODE BEFORE REAL FLIGHT) ----
+PARK_X = 0.2       # m; replace with your verified clear parking X coordinate
+PARK_Y = 1.2       # m; replace with your verified clear parking Y coordinate
+PARK_Z = LEADER_Z  # m; altitude at which the leader moves to the parking point
 Z_MIN, Z_MAX = 0.5, 1.2
 
 # ---- leader square ------------------------------------------------------------
@@ -101,7 +105,6 @@ SQ_LAPS   = 2
 SQ_RAMP_S = 1.5
 SQ_MARGIN = 0.3
 FINISH_EXTRA_S = 2.0
-LEADER_DEV_MAX = 0.6
 
 TAU    = 3.0
 D_MIN  = 0.5
@@ -747,10 +750,14 @@ def prepare(args, L, F, dry):
 
 
 def flight(args, dry, lcf, fcf, L, F, rows, ctrl, fcmd0, wq, stop_evt):
-    """Worker thread: take off both, run the 10 Hz loop, land both."""
+    """Worker thread: leader parks/lands first; follower drains its queue, then lands."""
     lhc = None if dry else lcf.high_level_commander
     fhc = None if dry else fcf.high_level_commander
-    airborne = False
+    leader_airborne = False
+    follower_airborne = False
+    leader_landing_t = None
+    leader_park_started = False
+    leader_park_target = np.array([PARK_X, PARK_Y, PARK_Z], dtype=float)
     try:
         if not dry:
             for cf in (lcf, fcf):
@@ -765,7 +772,8 @@ def flight(args, dry, lcf, fcf, L, F, rows, ctrl, fcmd0, wq, stop_evt):
             print(f"[Both] TAKEOFF -> leader z={args.leader_z} m, follower z={FLY_Z} m")
             lhc.takeoff(args.leader_z, TAKEOFF_DUR)
             fhc.takeoff(FLY_Z, TAKEOFF_DUR)
-            airborne = True
+            leader_airborne = True
+            follower_airborne = True
             stop_evt.wait(TAKEOFF_DUR + 1.0)
 
         print(f"[Run] FOLLOWING  tau={args.tau} s  D_MIN={args.dmin} m  vmax={args.vmax} m/s  "
@@ -804,14 +812,50 @@ def flight(args, dry, lcf, fcf, L, F, rows, ctrl, fcmd0, wq, stop_evt):
                         SAFE_Y[0] - ZONE_BREACH <= lp[1] <= SAFE_Y[1] + ZONE_BREACH):
                     print(f"[Leader] left the safe zone at ({lp[0]:.2f}, {lp[1]:.2f}) -> landing both")
                     break
+
             lcmd, ldone = ctrl.update(t_loop, dt_real)
             lcmd = np.array(lcmd, dtype=float)
+
+            # Let the final FEED_TAIL_S samples enter the FIFO before moving the
+            # leader away. The follower then works through the frozen queue.
+            park_after = None if ctrl.t_fin is None else ctrl.t_fin + FEED_TAIL_S
+            if (not leader_park_started and park_after is not None and t_loop >= park_after):
+                leader_park_started = True
+                print(f"[Leader] final queue samples fed -> moving to parking point "
+                      f"({PARK_X:.2f}, {PARK_Y:.2f}, {PARK_Z:.2f})")
+
+            if leader_park_started and leader_landing_t is None:
+                lcmd = step_toward(prev_lcmd, leader_park_target, args.leader_speed, dt_real)
+                if np.linalg.norm(lp[:2] - leader_park_target[:2]) <= 0.12 and abs(lp[2] - leader_park_target[2]) <= 0.15:
+                    if not dry:
+                        print("[Leader] reached parking point -> landing leader; follower continues")
+                        try:
+                            lhc.land(0.0, duration_s=LAND_DUR)
+                            leader_landing_t = t_loop
+                        except Exception as e:
+                            print(f"[Leader] parking land command failed: {e} -> landing both")
+                            break
+                    else:
+                        leader_landing_t = t_loop
+                        print("[Leader] dry-run reached parking point -> simulated landing")
+            elif leader_landing_t is not None:
+                lcmd = leader_park_target.copy()
+                if t_loop - leader_landing_t >= LAND_DUR:
+                    if not dry:
+                        try:
+                            lhc.stop()
+                        except Exception as e:
+                            print(f"[Leader] stop after landing warning: {e}")
+                    leader_airborne = False
+                    print("[Leader] landed; follower is continuing independently")
+                    # Keep the timestamp non-None so no further park/land commands are sent.
+
             if dry:
                 lvel = (lcmd - prev_lcmd) / max(dt_real, 1e-3)
                 L.push(t_loop, lcmd, lvel)
                 lat = L.latest()
                 age = t_loop - lat[0]
-            else:
+            elif leader_landing_t is None:
                 lhc.go_to(lcmd[0], lcmd[1], lcmd[2], yaw=0.0, duration_s=DT, relative=False)
             prev_lcmd = lcmd.copy()
 
@@ -915,8 +959,8 @@ def flight(args, dry, lcf, fcf, L, F, rows, ctrl, fcmd0, wq, stop_evt):
                       f"J={ev['J']:.3f}" + ("  [HOLD]" if tgt is None else ""))
             tick += 1
 
-            if ldone and not wq.q:
-                print("[Run] leader finished and every checkpoint has been reached -> landing")
+            if leader_landing_t is not None and not wq.q:
+                print("[Run] leader parked/landed and follower reached every checkpoint -> landing follower")
                 break
             stop_evt.wait(max(0.0, DT - (time.time() - t_loop)))
 
@@ -927,19 +971,37 @@ def flight(args, dry, lcf, fcf, L, F, rows, ctrl, fcmd0, wq, stop_evt):
         print("\n[Run] ERROR in flight loop -> landing")
         traceback.print_exc()
     finally:
-        if airborne:
-            print("[Both] LANDING")
-            for name, h in (('Leader', lhc), ('Follower', fhc)):
+        if not dry:
+            # If the leader's independent landing was already commanded, allow it
+            # to finish instead of issuing a second landing command.
+            if leader_landing_t is not None and leader_airborne:
+                remaining = max(0.0, LAND_DUR - (time.time() - leader_landing_t))
+                if remaining:
+                    time.sleep(remaining)
                 try:
-                    h.land(0.0, duration_s=LAND_DUR)
+                    lhc.stop()
                 except Exception as e:
-                    print(f"[{name}] landing command error: {e}")
-            time.sleep(LAND_DUR + 0.5)
-            for name, h in (('Leader', lhc), ('Follower', fhc)):
-                try:
-                    h.stop()
-                except Exception as e:
-                    print(f"[{name}] stop command error: {e}")
+                    print(f"[Leader] stop after landing warning: {e}")
+                leader_airborne = False
+
+            landing = []
+            if leader_airborne:
+                landing.append(('Leader', lhc))
+            if follower_airborne:
+                landing.append(('Follower', fhc))
+            if landing:
+                print("[Landing] " + " and ".join(name for name, _ in landing))
+                for name, h in landing:
+                    try:
+                        h.land(0.0, duration_s=LAND_DUR)
+                    except Exception as e:
+                        print(f"[{name}] landing command error: {e}")
+                time.sleep(LAND_DUR + 0.5)
+                for name, h in landing:
+                    try:
+                        h.stop()
+                    except Exception as e:
+                        print(f"[{name}] stop command error: {e}")
 
 # =============================================================================
 #  MAIN
@@ -987,6 +1049,22 @@ def main():
                          f"(corners: {path.pts.tolist()}). Change --center-x/--center-y/--side.")
     if args.laps < 1:
         raise SystemExit("--laps must be >= 1")
+    if not (SAFE_X[0] + GEO_MARGIN <= PARK_X <= SAFE_X[1] - GEO_MARGIN and
+            SAFE_Y[0] + GEO_MARGIN <= PARK_Y <= SAFE_Y[1] - GEO_MARGIN and
+            Z_MIN <= PARK_Z <= Z_MAX):
+        raise SystemExit("PARK_X, PARK_Y and PARK_Z must be inside the geofence and altitude limits.")
+    if not dry:
+        park_xy = np.array([PARK_X, PARK_Y], dtype=float)
+        edge_clearances = []
+        for i in range(4):
+            a, b = path.pts[i], path.pts[(i + 1) % 4]
+            ab = b - a
+            u = float(np.clip(np.dot(park_xy - a, ab) / max(np.dot(ab, ab), 1e-9), 0.0, 1.0))
+            edge_clearances.append(float(np.linalg.norm(park_xy - (a + u * ab))))
+        park_clearance = min(edge_clearances)
+        if park_clearance < args.dmin + 0.2:
+            raise SystemExit(f"Parking point is only {park_clearance:.2f} m from the square path. "
+                             f"Choose a point at least {args.dmin + 0.2:.2f} m from every path edge.")
     if args.tg <= 0 or args.tg_final <= 0 or args.amax <= 0 or args.runaway <= 0 or args.tol <= 0:
         raise SystemExit("--tg, --tg-final, --amax, --runaway and --tol must be > 0")
     if args.stale_hold >= args.leader_lost:
@@ -1054,3 +1132,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
